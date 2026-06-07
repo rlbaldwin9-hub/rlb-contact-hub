@@ -1087,17 +1087,30 @@ async function submitForm(formId, formType, toastId, btn) {
 
   try {
     const payload = buildPayload(form, formType);
-    const resp = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+
+    const hidden = document.createElement('form');
+    hidden.method = 'POST';
+    hidden.action = SCRIPT_URL;
+    hidden.target = '_blank';
+    hidden.style.display = 'none';
+
+    Object.entries(payload).forEach(([key, val]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = val;
+      hidden.appendChild(input);
     });
+
+    document.body.appendChild(hidden);
+    hidden.submit();
+    document.body.removeChild(hidden);
+
     showToast(toastId, 'success', '✅ Sent! Rachel will be in touch soon. Thank you for reaching out.');
     form.reset();
     document.querySelectorAll('#' + formId + ' .star-btn').forEach(s => s.classList.remove('lit'));
   } catch (err) {
-    showToast(toastId, 'error', '⚠️ Something went wrong sending your message. Please try again, or email Rachel directly at ogrlbdesigns@gmail.com');
+    showToast(toastId, 'error', '⚠️ Something went wrong. Please email Rachel directly at ogrlbdesigns@gmail.com');
     console.error(err);
   }
 
