@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RLB Contact Hub — RLB Designs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #7a9e87;
+    --sage-dark: #5a7e67;
+    --sage-light: #e8f0eb;
+    --blush: #d4a5a0;
+    --blush-light: #f8efee;
+    --gold: #c9a84c;
+    --gold-light: #faf3e0;
+    --cream: #f5f0e8;
+    --cream-dark: #ede6d8;
+    --dark: #3a3028;
+    --mid: #6b5f55;
+    --muted: #9e928a;
+    --white: #ffffff;
+    --error: #c0392b;
+    --success: #2e7d52;
+    --radius: 10px;
+    --shadow: 0 2px 16px rgba(58,48,40,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--dark);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  header .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+  header .brand span { color: var(--cream); font-weight: 300; font-size: 1rem; margin-left: 0.5rem; font-family: 'Lato', sans-serif; }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1rem;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrapper {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .tab-nav {
+    display: flex;
+    border-bottom: 2px solid var(--cream-dark);
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--cream);
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.85rem 0.5rem 0.75rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--sage-dark); background: var(--sage-light); }
+  .tab-btn.active {
+    color: var(--sage-dark);
+    border-bottom-color: var(--sage);
+    background: var(--white);
+  }
+  .tab-btn .tab-icon { display: block; font-size: 1.2rem; margin-bottom: 3px; }
+
+  /* ── FORM PANELS ── */
+  .tab-panel { display: none; padding: 2rem 2.5rem; }
+  .tab-panel.active { display: block; }
+
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+  .panel-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+    border-left: 3px solid var(--sage-light);
+    padding-left: 0.85rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .form-row.single { grid-template-columns: 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+  .field label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .field label .req { color: var(--blush); margin-left: 2px; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--dark);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--sage);
+    box-shadow: 0 0 0 3px rgba(122,158,135,0.15);
+  }
+  .field textarea { resize: vertical; line-height: 1.6; }
+  .field textarea.code-box {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    background: #fafaf8;
+    border-color: var(--cream-dark);
+  }
+
+  .field-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 0.2rem;
+  }
+  .field-hint strong { color: var(--sage-dark); }
+  .field-hint code {
+    background: var(--cream);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.78rem;
+    color: var(--dark);
+    border: 1px solid var(--cream-dark);
+  }
+
+  /* Star rating */
+  .star-row { display: flex; gap: 6px; margin-top: 4px; }
+  .star-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.6rem; color: var(--cream-dark);
+    transition: color 0.15s, transform 0.1s;
+    padding: 0;
+    line-height: 1;
+  }
+  .star-btn:hover, .star-btn.lit { color: var(--gold); }
+  .star-btn:active { transform: scale(1.2); }
+
+  /* Frequency radio pills */
+  .radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 4px; }
+  .radio-pill { position: relative; }
+  .radio-pill input[type="radio"] {
+    position: absolute; opacity: 0; width: 0; height: 0;
+  }
+  .radio-pill label {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .radio-pill input[type="radio"]:checked + label {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--white);
+  }
+
+  /* Submit button */
+  .submit-row { margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .btn-submit {
+    background: var(--sage);
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 2.25rem;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { background: var(--sage-dark); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Toast / status messages */
+  .toast {
+    display: none;
+    padding: 0.85rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+  .toast.success { display: block; background: #e8f5ef; color: var(--success); border-left: 4px solid var(--success); }
+  .toast.error { display: block; background: #fdf0ee; color: var(--error); border-left: 4px solid var(--error); }
+
+  /* ── FAQ PANEL ── */
+  .faq-search-wrap { position: relative; margin-bottom: 1.5rem; }
+  .faq-search-wrap input {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem 0.65rem 2.6rem;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 6px;
+    width: 100%;
+    background: var(--white);
+    color: var(--dark);
+  }
+  .faq-search-wrap input:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(122,158,135,0.15); }
+  .faq-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .faq-section { margin-bottom: 2rem; }
+  .faq-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--sage-dark);
+    padding: 0.4rem 0 0.6rem;
+    border-bottom: 2px solid var(--sage-light);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .faq-item {
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: var(--sage-light); }
+
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--dark);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .faq-q:hover { background: var(--cream); }
+  .faq-arrow { font-size: 0.75rem; color: var(--sage); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  .faq-a {
+    display: none;
+    padding: 0 1rem 1rem;
+    font-size: 0.88rem;
+    color: var(--mid);
+    line-height: 1.7;
+    border-top: 1px solid var(--cream-dark);
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a code {
+    background: var(--cream);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: var(--dark);
+    border: 1px solid var(--cream-dark);
+  }
+  .faq-a ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  .faq-a li { margin-bottom: 0.3rem; }
+  .faq-a .step-tag {
+    display: inline-block;
+    background: var(--sage-light);
+    color: var(--sage-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+  }
+
+  .faq-still-need {
+    background: var(--gold-light);
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  .faq-still-need p {
+    font-size: 0.92rem;
+    color: var(--mid);
+    margin-bottom: 0.75rem;
+  }
+  .faq-still-need p strong { color: var(--dark); }
+  .btn-contact {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 0.65rem 1.75rem;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-contact:hover { background: #b8943c; color: var(--white); }
+
+  .no-faq-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    display: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .tab-panel { padding: 1.5rem 1.25rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.5rem; }
+    .tab-btn { font-size: 0.68rem; min-width: 70px; padding: 0.75rem 0.35rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="https://www.rlbdesigns.com">RLB Designs <span>/ Contact Hub</span></a>
+</header>
+
+<div class="hero">
+  <h1>How Can We Help You?</h1>
+  <p>Report an issue, ask about a book series, share feedback, or browse our quick-fix FAQ — we read every message.</p>
+</div>
+
+<div class="container">
+  <div class="tabs-wrapper">
+
+    <nav class="tab-nav" role="tablist" aria-label="Contact categories">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-app" data-tab="app">
+        <span class="tab-icon">🐛</span>App Issue
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-books" data-tab="books">
+        <span class="tab-icon">📚</span>Book / Series
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-feedback" data-tab="feedback">
+        <span class="tab-icon">💬</span>Feedback
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-suggest" data-tab="suggest">
+        <span class="tab-icon">💡</span>Suggestion
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-collab" data-tab="collab">
+        <span class="tab-icon">🤝</span>Collaborate
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-faq" data-tab="faq">
+        <span class="tab-icon">❓</span>FAQ
+      </button>
+    </nav>
+
+    <!-- ══════════════════════════════════════
+         TAB 1 — APP ISSUE
+    ═══════════════════════════════════════ -->
+    <div id="panel-app" class="tab-panel active" role="tabpanel">
+      <h2 class="panel-title">Report an App Issue</h2>
+      <p class="panel-desc">
+        Something not working right? Fill in as much detail as you can — especially any error codes. Before submitting, try the <button onclick="switchTab('faq')" style="background:none;border:none;color:var(--sage-dark);font-weight:700;cursor:pointer;text-decoration:underline;font-size:inherit;padding:0;">FAQ Quick Fixes tab</button> — it may solve your problem instantly!
+      </p>
+      <form id="form-app">
+        <div class="form-row">
+          <div class="field">
+            <label>Your Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Which App? <span class="req">*</span></label>
+            <select name="app_name" required>
+              <option value="">— Select an app —</option>
+              <option>Reading Journal</option>
+              <option>Cookbook Recipe App</option>
+              <option>Coloring Tool</option>
+              <option>Mockup Generator</option>
+              <option>Book Review Form</option>
+              <option>Contact Hub (this form)</option>
+              <option>Other / Not sure</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Your Device &amp; Browser</label>
+            <select name="device_browser">
+              <option value="">— Select —</option>
+              <option>Desktop — Chrome</option>
+              <option>Desktop — Firefox</option>
+              <option>Desktop — Safari</option>
+              <option>Desktop — Edge</option>
+              <option>Mobile — Chrome (Android)</option>
+              <option>Mobile — Safari (iPhone/iPad)</option>
+              <option>Mobile — Other</option>
+              <option>Tablet</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>What were you doing when the problem happened? <span class="req">*</span></label>
+          <textarea name="what_happened" rows="3" required placeholder='Example: "I clicked on the Recommendations tab and the page went blank."'></textarea>
+        </div>
+
+        <div class="field">
+          <label>Error Message or Code (if any)</label>
+          <textarea class="code-box" name="error_code" rows="6"
+            placeholder="Paste any error text here exactly as it appears.&#10;&#10;How to copy an error from your browser:&#10;1. Press F12 (Windows) or Cmd+Option+I (Mac) to open developer tools&#10;2. Click the Console tab&#10;3. Find the red error message&#10;4. Right-click it → Copy message&#10;5. Paste it here&#10;&#10;Or simply describe what you see on screen."></textarea>
+          <p class="field-hint">
+            <strong>Quick tip:</strong> You can also take a screenshot and describe what you see — that helps too! <br>
+            On Windows: <code>Windows + Shift + S</code> &nbsp;|&nbsp; On Mac: <code>Cmd + Shift + 4</code>
+          </p>
+        </div>
+
+        <div class="field">
+          <label>How often does this happen?</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="frequency" id="freq-always" value="Every time"><label for="freq-always">Every time</label></div>
+            <div class="radio-pill"><input type="radio" name="frequency" id="freq-sometimes" value="Sometimes"><label for="freq-sometimes">Sometimes</label></div>
+            <div class="radio-pill"><input type="radio" name="frequency" id="freq-once" value="Just once so far"><label for="freq-once">Just once so far</label></div>
+            <div class="radio-pill"><input type="radio" name="frequency" id="freq-unsure" value="Not sure"><label for="freq-unsure">Not sure</label></div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn-submit">Send Report</button>
+          <p class="form-note">Your report goes directly to Rachel. We aim to respond within 2 business days.</p>
+        </div>
+        <div class="toast" id="toast-app"></div>
+      </form>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TAB 2 — BOOK / SERIES QUESTION
+    ═══════════════════════════════════════ -->
+    <div id="panel-books" class="tab-panel" role="tabpanel">
+      <h2 class="panel-title">Book &amp; Series Questions</h2>
+      <p class="panel-desc">
+        Wondering when the next book drops? Have a question about a series? Want to know if a book is AGS-safe? Ask away!
+      </p>
+      <form id="form-books">
+        <div class="form-row">
+          <div class="field">
+            <label>Your Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Which Series or Book?</label>
+            <select name="series">
+              <option value="">— Select if applicable —</option>
+              <optgroup label="Children's Series">
+                <option>The Wobbly Wonder Series</option>
+                <option>Pantry Pals Adventures</option>
+                <option>Chronicles of Simple Life Homestead</option>
+                <option>Badges of Timber Creek</option>
+                <option>Chrono-Compass Chronicles</option>
+                <option>Paper Worlds Chronicles</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option>Cookbooks (general)</option>
+                <option>Coloring Books</option>
+                <option>Journals / Notebooks</option>
+                <option>A standalone title (I'll explain below)</option>
+                <option>Not sure / Other</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="field">
+            <label>Question Type</label>
+            <select name="question_type">
+              <option value="">— Select —</option>
+              <option>When is the next book coming out?</option>
+              <option>Reading order for a series</option>
+              <option>Is this book AGS / allergy safe?</option>
+              <option>Where can I buy this book?</option>
+              <option>Audiobook / other format availability</option>
+              <option>Content question (age range, themes, etc.)</option>
+              <option>Recipe / ingredient question</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Your Question <span class="req">*</span></label>
+          <textarea name="question" rows="5" required placeholder="Ask anything about a book, series, recipe, or upcoming release. The more detail you give, the better Rachel can answer!"></textarea>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn-submit">Send Question</button>
+          <p class="form-note">Rachel personally reads all book questions. Response time: 2–4 business days.</p>
+        </div>
+        <div class="toast" id="toast-books"></div>
+      </form>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TAB 3 — GENERAL FEEDBACK / COMPLAINT
+    ═══════════════════════════════════════ -->
+    <div id="panel-feedback" class="tab-panel" role="tabpanel">
+      <h2 class="panel-title">Feedback &amp; Complaints</h2>
+      <p class="panel-desc">
+        Had a great experience — or a not-so-great one? Both matter. Your honest feedback helps make RLB Designs better for everyone.
+      </p>
+      <form id="form-feedback">
+        <div class="form-row">
+          <div class="field">
+            <label>Your Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Subject <span class="req">*</span></label>
+          <input type="text" name="subject" required placeholder='e.g. "Wrong recipe listed on website" or "Love the new coloring book!"'>
+        </div>
+
+        <div class="field">
+          <label>Feedback Type</label>
+          <select name="feedback_type">
+            <option value="">— Select —</option>
+            <option>Complaint — something went wrong</option>
+            <option>Positive feedback — I loved something!</option>
+            <option>Website / app experience</option>
+            <option>Order / purchase issue</option>
+            <option>Content error (typo, wrong info, etc.)</option>
+            <option>General comment</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Your Message <span class="req">*</span></label>
+          <textarea name="message" rows="6" required placeholder="Tell us what happened, what you loved, or what could be improved. Be as specific as you like!"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Overall Experience Rating (optional)</label>
+          <div class="star-row" id="stars-feedback" role="group" aria-label="Star rating">
+            <button type="button" class="star-btn" data-val="1" aria-label="1 star">★</button>
+            <button type="button" class="star-btn" data-val="2" aria-label="2 stars">★</button>
+            <button type="button" class="star-btn" data-val="3" aria-label="3 stars">★</button>
+            <button type="button" class="star-btn" data-val="4" aria-label="4 stars">★</button>
+            <button type="button" class="star-btn" data-val="5" aria-label="5 stars">★</button>
+          </div>
+          <input type="hidden" name="rating" id="rating-feedback" value="">
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn-submit">Send Feedback</button>
+          <p class="form-note">All feedback is read by Rachel personally. Thank you for taking the time!</p>
+        </div>
+        <div class="toast" id="toast-feedback"></div>
+      </form>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TAB 4 — SUGGESTION / FEATURE REQUEST
+    ═══════════════════════════════════════ -->
+    <div id="panel-suggest" class="tab-panel" role="tabpanel">
+      <h2 class="panel-title">Suggestions &amp; Feature Requests</h2>
+      <p class="panel-desc">
+        Have an idea for a new book, app feature, recipe category, or something else? Rachel loves hearing from her readers — your ideas have shaped real books and tools!
+      </p>
+      <form id="form-suggest">
+        <div class="form-row">
+          <div class="field">
+            <label>Your Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>This suggestion is for...</label>
+          <select name="suggestion_for">
+            <option value="">— Select —</option>
+            <option>A new book idea</option>
+            <option>A new book series</option>
+            <option>An app feature or improvement</option>
+            <option>A new type of app / tool</option>
+            <option>A recipe or cookbook idea</option>
+            <option>Website improvement</option>
+            <option>Something else</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Your Suggestion <span class="req">*</span></label>
+          <textarea name="suggestion" rows="6" required placeholder="Describe your idea in as much detail as you like! What problem would it solve? Who would it help? The more you share, the better Rachel can understand your vision."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Would you like to be credited if this idea is used? (optional)</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="credit" id="credit-yes" value="Yes, please credit me"><label for="credit-yes">Yes, credit me!</label></div>
+            <div class="radio-pill"><input type="radio" name="credit" id="credit-no" value="No, happy to stay anonymous"><label for="credit-no">Stay anonymous</label></div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn-submit">Send Suggestion</button>
+          <p class="form-note">Ideas that become real books or features are shared in Rachel's newsletter with credit (if you choose).</p>
+        </div>
+        <div class="toast" id="toast-suggest"></div>
+      </form>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TAB 5 — COLLABORATION / MEDIA
+    ═══════════════════════════════════════ -->
+    <div id="panel-collab" class="tab-panel" role="tabpanel">
+      <h2 class="panel-title">Collaboration &amp; Media Inquiries</h2>
+      <p class="panel-desc">
+        Interested in working together? Whether you're a blogger, podcaster, fellow author, or educator — Rachel is open to conversations. Please give as much detail as possible so she can respond meaningfully.
+      </p>
+      <form id="form-collab">
+        <div class="form-row">
+          <div class="field">
+            <label>Your Name <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label>Your Email <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Website, Blog, or Social Handle (optional)</label>
+            <input type="text" name="website" placeholder="https://yoursite.com or @yourhandle">
+          </div>
+          <div class="field">
+            <label>Inquiry Type <span class="req">*</span></label>
+            <select name="inquiry_type" required>
+              <option value="">— Select —</option>
+              <option>Author collaboration / co-writing</option>
+              <option>Review copy request</option>
+              <option>Blog / newsletter feature</option>
+              <option>Podcast or YouTube interview</option>
+              <option>Classroom / library bulk order</option>
+              <option>Book club partnership</option>
+              <option>Social media collaboration</option>
+              <option>Press / media inquiry</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Tell Me About Your Project or Proposal <span class="req">*</span></label>
+          <textarea name="proposal" rows="6" required placeholder="Describe your project, audience size, timeline, and what you're hoping to collaborate on. The more detail you provide, the easier it is for Rachel to respond with a clear yes or no!"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Audience or Reach (optional)</label>
+          <input type="text" name="audience_size" placeholder='e.g. "15,000 Instagram followers" or "Monthly podcast audience of 2,000"'>
+        </div>
+
+        <div class="submit-row">
+          <button type="submit" class="btn-submit">Send Inquiry</button>
+          <p class="form-note">Media and collaboration inquiries typically receive a response within 5–7 business days.</p>
+        </div>
+        <div class="toast" id="toast-collab"></div>
+      </form>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TAB 6 — FAQ
+    ═══════════════════════════════════════ -->
+    <div id="panel-faq" class="tab-panel" role="tabpanel">
+      <h2 class="panel-title">FAQ &amp; Quick Fixes</h2>
+      <p class="panel-desc">
+        Most problems can be solved in under a minute. Search below or browse by category — then if you still need help, use the contact form.
+      </p>
+
+      <div class="faq-search-wrap">
+        <span class="faq-search-icon">🔍</span>
+        <input type="search" id="faq-search" placeholder="Search the FAQ... (e.g. &quot;buttons not working&quot; or &quot;saved data&quot;)">
+      </div>
+
+      <div id="faq-no-results" class="no-faq-results">No matching questions found. Try different keywords, or use one of the contact tabs above.</div>
+
+      <!-- SECTION 1 -->
+      <div class="faq-section" data-section>
+        <h3 class="faq-section-title">🔄 Quick Fixes — Try These First</h3>
+
+        <div class="faq-item" data-keywords="force reload refresh page update cache">
+          <button class="faq-q">Force-reload the page (clears old cached files) <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            This is the #1 fix for most display problems and blank pages.<br><br>
+            <span class="step-tag">Windows</span> Press <code>Ctrl + Shift + R</code><br>
+            <span class="step-tag">Mac</span> Press <code>Cmd + Shift + R</code><br>
+            <span class="step-tag">Mobile</span> Close the browser tab completely, then re-open the link.<br><br>
+            This forces your browser to download a fresh copy instead of using a stored (cached) version.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="incognito private mode extensions ad blocker">
+          <button class="faq-q">Try opening the app in Incognito / Private mode <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            Browser extensions (especially ad blockers and privacy tools) can interfere with apps.<br><br>
+            <span class="step-tag">Chrome</span> Press <code>Ctrl + Shift + N</code> (Windows) or <code>Cmd + Shift + N</code> (Mac)<br>
+            <span class="step-tag">Firefox</span> Press <code>Ctrl + Shift + P</code><br>
+            <span class="step-tag">Safari</span> File → New Private Window<br><br>
+            If the app works fine in Private mode, an extension is the cause. Try disabling them one at a time.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="clear cache cookies storage reset browser data">
+          <button class="faq-q">Clear your browser cache and cookies <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            If a force-reload didn't help, a full cache clear usually does.<br><br>
+            <span class="step-tag">Chrome / Edge</span> Press <code>Ctrl + Shift + Delete</code> → select Cached images &amp; Cookies → Clear data<br>
+            <span class="step-tag">Firefox</span> Press <code>Ctrl + Shift + Delete</code> → same steps<br>
+            <span class="step-tag">Safari (Mac)</span> Safari menu → Settings → Privacy → Manage Website Data → Remove All<br><br>
+            <strong>Note:</strong> Clearing browser data will also clear your Reading Journal entries if you have any saved locally. Make sure to use the Share / Export feature first to back up your list.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="different browser chrome firefox safari edge try another">
+          <button class="faq-q">Try a different browser <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            If the problem persists, try opening the app in a different browser:<br><br>
+            <ul>
+              <li>Google Chrome (recommended — best compatibility)</li>
+              <li>Microsoft Edge</li>
+              <li>Firefox</li>
+              <li>Safari (Mac / iPhone)</li>
+            </ul>
+            If it works in one browser but not another, that tells us exactly where to look.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="faq-section" data-section>
+        <h3 class="faq-section-title">🐛 Common App Problems</h3>
+
+        <div class="faq-item" data-keywords="buttons not working clicking nothing happens unresponsive">
+          <button class="faq-q">Buttons aren't responding when I click them <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            This is almost always caused by one of two things:<br><br>
+            <strong>1. A JavaScript error crashed the app.</strong> Press <code>F12</code> → click the Console tab → look for red error text. If you see one, copy it and paste it into the App Issue tab above.<br><br>
+            <strong>2. A browser extension is blocking scripts.</strong> Try Incognito mode (see above). Ad blockers and script blockers are the most common culprits.<br><br>
+            Quick fixes to try first: force-reload (<code>Ctrl + Shift + R</code>), then try incognito mode, then try a different browser.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="app won't load blank white page not loading spinning">
+          <button class="faq-q">The app won't load — just a blank or spinning page <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            <strong>Step 1:</strong> Check your internet connection — try loading another website.<br>
+            <strong>Step 2:</strong> Force-reload: <code>Ctrl + Shift + R</code> (Windows) / <code>Cmd + Shift + R</code> (Mac)<br>
+            <strong>Step 3:</strong> Try the direct GitHub link instead of the custom domain (check the app's documentation page for the backup URL).<br>
+            <strong>Step 4:</strong> Try on a different device or network (e.g., switch from Wi-Fi to mobile data).<br><br>
+            If none of these work, the app may be temporarily down. Submit an App Issue report so Rachel can investigate.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="saved data disappeared lost journal books gone cleared">
+          <button class="faq-q">My saved data (journal entries, reading list) disappeared <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            RLB apps store your data in your browser's local storage — it stays on your device and is never sent to a server. This means:<br><br>
+            <ul>
+              <li>Data is <strong>device-specific</strong> — it won't appear on a different device</li>
+              <li>Clearing browser data or cookies deletes it</li>
+              <li>Private/Incognito mode does not save data between sessions</li>
+              <li>Some browsers auto-clear storage after a period of inactivity</li>
+            </ul>
+            <strong>Prevention:</strong> Use the Share / Export feature in the Reading Journal regularly to create a backup URL you can bookmark.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="form won't submit send button submit not working">
+          <button class="faq-q">A form won't submit — the Send button does nothing <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            <strong>Check required fields first</strong> — fields marked with a red asterisk (*) must be filled in. Scroll up to see if any are highlighted in red.<br><br>
+            Other things to try:<br>
+            <ul>
+              <li>Disable your VPN if you're using one</li>
+              <li>Try a different browser or device</li>
+              <li>Check that your email address is formatted correctly</li>
+              <li>Try force-reloading and filling the form again</li>
+            </ul>
+            Still not working? Use the App Issue tab to report it.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="page looks broken unstyled weird layout fonts missing">
+          <button class="faq-q">The page looks broken, unstyled, or the fonts are wrong <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            This is almost always a caching issue.<br><br>
+            <span class="step-tag">Fix</span> Force-reload with <code>Ctrl + Shift + R</code> (Windows) or <code>Cmd + Shift + R</code> (Mac)<br><br>
+            If fonts look wrong: the app loads fonts from Google Fonts. If your network blocks Google services, fonts will fall back to a system default. This doesn't affect functionality — just appearance.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="faq-section" data-section>
+        <h3 class="faq-section-title">📚 Books &amp; Series</h3>
+
+        <div class="faq-item" data-keywords="next book coming out release date series update">
+          <button class="faq-q">When is the next book in [series] coming out? <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            Rachel is a prolific author with 50+ titles published! New books are announced first on her website and social media.<br><br>
+            <strong>Best places to stay updated:</strong><br>
+            <ul>
+              <li>📖 <a href="https://www.rlbdesigns.com" style="color:var(--sage-dark)">rlbdesigns.com</a> — new releases posted here first</li>
+              <li>🛒 <a href="https://www.amazon.com/stores/Rachel-Baldwin/author/B0FGJZ6FRF" style="color:var(--sage-dark)" target="_blank" rel="noopener">Amazon Author Page</a> — follow to get notified</li>
+            </ul>
+            For a specific release date question, use the Book / Series tab above.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="buy purchase where amazon order book">
+          <button class="faq-q">Where can I buy Rachel's books? <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            All books are available on Amazon and through Ingram Spark (for retailers and libraries).<br><br>
+            <ul>
+              <li>🛒 <a href="https://www.amazon.com/stores/Rachel-Baldwin/author/B0FGJZ6FRF" style="color:var(--sage-dark)" target="_blank" rel="noopener">Amazon Author Store — Rachel Baldwin</a></li>
+              <li>📖 <a href="https://www.rlbdesigns.com" style="color:var(--sage-dark)">rlbdesigns.com</a> — full catalog with links</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="alpha gal ags safe mammal free dairy free recipe ingredients">
+          <button class="faq-q">Are the cookbook recipes really Alpha-Gal safe? <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            Yes — Rachel herself has Alpha-Gal Syndrome and created her cookbooks specifically to be 100% AGS-compliant.<br><br>
+            All recipes are:<br>
+            <ul>
+              <li>Free from beef, pork, lamb, venison, and other mammal meats</li>
+              <li>Free from mammal-derived dairy (milk, butter, cheese, cream)</li>
+              <li>Free from gelatin and other hidden mammal byproducts</li>
+            </ul>
+            If you have a specific ingredient question about a recipe, use the Book / Series tab to ask directly.
+          </div>
+        </div>
+
+        <div class="faq-item" data-keywords="reading order series order first book start which">
+          <button class="faq-q">What order should I read the books in a series? <span class="faq-arrow">▼</span></button>
+          <div class="faq-a">
+            Most of Rachel's children's series can be read in any order — each book is a standalone story with the same lovable characters.<br><br>
+            For a specific reading order recommendation, visit the book's page on <a href="https://www.rlbdesigns.com" style="color:var(--sage-dark)">rlbdesigns.com</a> or use the Book / Series tab above.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="faq-section" data-section>
+        <h3 class="faq-section-title">📬 Still Need Help?</h3>
+      </div>
+
+      <div class="faq-still-need">
+        <p><strong>Didn't find what you were looking for?</strong><br>Use one of the contact tabs above and Rachel will get back to you personally.</p>
+        <button class="btn-contact" onclick="switchTab('app')">Report an App Issue</button>
+        &nbsp;
+        <button class="btn-contact" onclick="switchTab('books')" style="margin-top:0.5rem">Ask a Book Question</button>
+      </div>
+
+    </div><!-- /panel-faq -->
+
+  </div><!-- /tabs-wrapper -->
+</div><!-- /container -->
+
+<footer>
+  <p>© <span id="yr"></span> RLB Designs &nbsp;·&nbsp; <a href="https://www.rlbdesigns.com">rlbdesigns.com</a> &nbsp;·&nbsp; <a href="https://www.amazon.com/stores/Rachel-Baldwin/author/B0FGJZ6FRF" target="_blank" rel="noopener">Amazon Author Page</a></p>
+</footer>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+// Replace this with your deployed Google Apps Script Web App URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8MS8yja7dRr0kP8C_EDtrCCNRjV558c6-2RZ2r8mqMn_cA3WM7RH5Gr7jEVSbB_gFDA/exec';
+
+// ── YEAR ────────────────────────────────────────────────
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── TAB SWITCHING ────────────────────────────────────────
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tabName);
+    b.setAttribute('aria-selected', b.dataset.tab === tabName ? 'true' : 'false');
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + tabName);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// ── STAR RATING ──────────────────────────────────────────
+document.querySelectorAll('.star-row').forEach(row => {
+  const stars = row.querySelectorAll('.star-btn');
+  const hiddenInput = document.getElementById('rating-' + row.id.replace('stars-', ''));
+  stars.forEach((star, i) => {
+    star.addEventListener('click', () => {
+      hiddenInput.value = star.dataset.val;
+      stars.forEach((s, j) => s.classList.toggle('lit', j <= i));
+    });
+    star.addEventListener('mouseenter', () => {
+      stars.forEach((s, j) => s.classList.toggle('lit', j <= i));
+    });
+    star.addEventListener('mouseleave', () => {
+      const val = parseInt(hiddenInput.value) || 0;
+      stars.forEach((s, j) => s.classList.toggle('lit', j < val));
+    });
+  });
+});
+
+// ── FORM SUBMISSION ──────────────────────────────────────
+function showToast(id, type, msg) {
+  const t = document.getElementById(id);
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function buildPayload(form, formType) {
+  const data = new FormData(form);
+  const obj = { formType: formType, submittedAt: new Date().toISOString() };
+  data.forEach((val, key) => { obj[key] = val; });
+  return obj;
+}
+
+async function submitForm(formId, formType, toastId, btn) {
+  const form = document.getElementById(formId);
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const payload = buildPayload(form, formType);
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    showToast(toastId, 'success', '✅ Sent! Rachel will be in touch soon. Thank you for reaching out.');
+    form.reset();
+    document.querySelectorAll('#' + formId + ' .star-btn').forEach(s => s.classList.remove('lit'));
+  } catch (err) {
+    showToast(toastId, 'error', '⚠️ Something went wrong sending your message. Please try again, or email Rachel directly at ogrlbdesigns@gmail.com');
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  btn.textContent = btn.textContent.replace('Sending…', 'Send');
+}
+
+// Wire each form
+const formConfigs = [
+  { formId: 'form-app',      type: 'App Issue',        toastId: 'toast-app',      label: 'Send Report' },
+  { formId: 'form-books',    type: 'Book/Series',      toastId: 'toast-books',    label: 'Send Question' },
+  { formId: 'form-feedback', type: 'Feedback',         toastId: 'toast-feedback', label: 'Send Feedback' },
+  { formId: 'form-suggest',  type: 'Suggestion',       toastId: 'toast-suggest',  label: 'Send Suggestion' },
+  { formId: 'form-collab',   type: 'Collaboration',    toastId: 'toast-collab',   label: 'Send Inquiry' },
+];
+
+formConfigs.forEach(cfg => {
+  const form = document.getElementById(cfg.formId);
+  if (!form) return;
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = form.querySelector('.btn-submit');
+    submitForm(cfg.formId, cfg.type, cfg.toastId, btn);
+  });
+});
+
+// ── FAQ ACCORDION ────────────────────────────────────────
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ── FAQ SEARCH ────────────────────────────────────────────
+document.getElementById('faq-search').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  const items = document.querySelectorAll('.faq-item');
+  const sections = document.querySelectorAll('[data-section]');
+  let anyVisible = false;
+
+  if (!q) {
+    items.forEach(i => i.style.display = '');
+    sections.forEach(s => s.style.display = '');
+    document.getElementById('faq-no-results').style.display = 'none';
+    return;
+  }
+
+  items.forEach(item => {
+    const kw = (item.dataset.keywords || '').toLowerCase();
+    const qText = item.querySelector('.faq-q').textContent.toLowerCase();
+    const aText = item.querySelector('.faq-a').textContent.toLowerCase();
+    const match = kw.includes(q) || qText.includes(q) || aText.includes(q);
+    item.style.display = match ? '' : 'none';
+    if (match) anyVisible = true;
+  });
+
+  sections.forEach(section => {
+    const visible = [...section.querySelectorAll('.faq-item')].some(i => i.style.display !== 'none');
+    section.style.display = visible ? '' : 'none';
+  });
+
+  document.getElementById('faq-no-results').style.display = anyVisible ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
